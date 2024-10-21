@@ -106,7 +106,8 @@ class ImageUploadView(LoginRequiredMixin, View):
                 image_path = default_storage.save(image.name, ContentFile(image.read()))
                 compressed_image_path = compress_image(image_path, size_kb, quality)
                 compressed_image_url = default_storage.url(compressed_image_path)
-                
+                print(compressed_image_url)
+
                 messages.success(request, 'Image compressed successfully!')
                 return render(request, self.template_name, {
                     'form': form,

@@ -5,8 +5,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}ImageCompressor{% endblock %}</title>
-    <link href="{% static 'compressor/style.css' %}" rel="stylesheet">
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'compressor/style.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Custom inline styles for success and error messages -->
+    <style>
+        .message {
+            padding: 15px;
+            margin: 10px auto;
+            border-radius: 5px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .message-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Animation to fade out messages */
+        .fade-out {
+            opacity: 1;
+            transition: opacity 2s ease-out;
+        }
+
+        .hidden {
+            opacity: 0;
+            visibility: hidden;
+            transition: visibility 0s 2s, opacity 2s ease-out;
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark">
@@ -42,14 +78,37 @@
             </ul>
         </div>
     </nav>
+
+    <!-- Messages section for success and error feedback -->
+    <div id="messages">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message {% if message.tags == 'success' %}message-success{% elif message.tags == 'error' %}message-error{% endif %} fade-out" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
     {% block content %}
     {% endblock %}
+
     <footer class="footer bg-dark text-white text-center py-3 mt-5">
         <p>&copy; 2024 ImageCompressor. All rights reserved.</p>
     </footer>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Auto-dismiss messages after 2 seconds -->
+    <script>
+        setTimeout(function() {
+            var messages = document.querySelectorAll('.fade-out');
+            messages.forEach(function(message) {
+                message.classList.add('hidden');
+            });
+        }, 2000);
+    </script>
 </body>
 </html>
-

@@ -22,9 +22,13 @@ from compressor.views import HomeView
 from django.conf.urls import handler404
 
 handler404 = 'compressor.views.custom_404'
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', HomeView.as_view(), name='home'),
     path('compress/', include('compressor.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
 
+# Serve static and media files regardless of the DEBUG setting
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
